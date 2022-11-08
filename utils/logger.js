@@ -1,5 +1,5 @@
 const { createLogger, format, transports } = require('winston');
-const { combine, timestamp, label, printf } = format;
+const { printf } = format;
 // require("winston-mongodb");
 
 const myFormat = printf(({ level, message, label, timestamp }) => {

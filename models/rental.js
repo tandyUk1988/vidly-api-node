@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const moment = require("moment");
 const mongoose = require("mongoose");
 
 const rentalSchema = new mongoose.Schema({
@@ -49,11 +50,24 @@ const rentalSchema = new mongoose.Schema({
     totalRental: {
         type: Number,
         min: 0
-    }
+    },
 });
 
-const Rental = mongoose.model("Rental", rentalSchema);
+rentalSchema.statics.lookup = function(customerId, movieId) {
+    return this.findOne({ 
+        "customer._id": customerId, 
+        "movie._id": movieId 
+    });
+}
 
+rentalSchema.methods.return = function() {
+    this.dateIn = new Date();
+    
+    const rentalDays = moment().diff(this.dateOut, "days")
+    this.totalRental = rentalDays * this.movie.dailyRentalRate;
+}
+
+const Rental = mongoose.model("Rental", rentalSchema);
 
 function rentalNotFound(rental, res) {
     if (!rental) return res.status(404).send("The rental with the given ID was not found.")

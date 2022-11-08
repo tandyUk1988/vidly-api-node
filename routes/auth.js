@@ -1,4 +1,4 @@
-const {User, userNotFound} = require("../models/user");
+const {User} = require("../models/user");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");

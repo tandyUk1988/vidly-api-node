@@ -11,11 +11,11 @@ const Customer = mongoose.model("Customer", new mongoose.Schema({
     },
     isGold: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
     phone: {
         type: String,
-        required: true,
         min: 11,
         max: 15
     }
@@ -31,8 +31,8 @@ function customerNotFound(customer, res) {
 function validateCustomer(customer) {
     const schema = Joi.object({
         name: Joi.string().required().min(5).max(50),
-        isGold: Joi.boolean().required(),
-        phone: Joi.string().required().min(11).max(15)
+        isGold: Joi.boolean(),
+        phone: Joi.string().min(11).max(15)
     });
 
     return schema.validate(customer);

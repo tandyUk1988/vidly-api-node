@@ -3,10 +3,12 @@ const request = require("supertest");
 const {Genre} = require("../../models/genre");
 const {User} = require("../../models/user");
 
-let app;
-
 describe("/api/genres", () => {
-    beforeEach(() => { server = require("../../server"); });
+    beforeEach(() => { 
+        jest.setTimeout(() => {
+            
+        }, 100000);
+        server = require("../../server"); });
     afterEach(async () => { 
         await server.close(); 
         await Genre.deleteMany({});
@@ -137,7 +139,7 @@ describe("/api/genres", () => {
             expect(updatedGenre.name).toBe(newName);
         });
 
-        it("should return the update genre if it is valid", async () => {
+        it("should return the updated genre if it is valid", async () => {
             const res = await exec();
 
             expect(res.body).toHaveProperty('_id');
