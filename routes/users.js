@@ -12,7 +12,7 @@ router.get("/me", auth, async (req, res) => {
     res.send(user)
 })
 
-router.post("/", auth, async (req, res) => {
+router.post("/", async (req, res) => {
     const { error } = validateUser(req.body);
     const { name, email, password } = req.body;
 
@@ -28,7 +28,10 @@ router.post("/", auth, async (req, res) => {
 
     const token = user.generateAuthToken();
     
-    res.header("x-auth-token", token).status(201).send(_.pick(user, ["name", "email", "isAdmin"]));
+    res
+    .header("x-auth-token", token)
+    .header("access-control-expose-headers", "x-auth-token")
+    .send(_.pick(user, ["name", "email", "isAdmin"]));
 })
 
 router.delete("/:id", async (req, res) => {
